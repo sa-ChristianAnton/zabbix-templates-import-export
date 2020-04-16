@@ -42,10 +42,10 @@ The "import options" are not yet configurable within this importer. They are har
 ### Parameters
 * `-d`, `--debug`: set log messages to DEBUG level
 * `-f`, `--file`: file to read and import (can bei either XML or JSON format, please note the `-j` parameter as well)
-* `-j`, `--json`: read fil in JSON format instead of XML. Please note, there is currently no automatic detection of the input format, so make sure to use the right combination of input data format and the `-j` parameter
+* `-j`, `--json`: read file in JSON format instead of XML. Please note, there is currently no automatic detection of the input format, so make sure to use the right combination of input data format and the `-j` parameter
 
 ### Example
-Import single XML file:
+Import single JSON file:
 ```
-python3 zabbix_template_importer.py -j "my nice template.xml"
+python3 zabbix_template_importer.py -j "my nice template.json"
 ```
