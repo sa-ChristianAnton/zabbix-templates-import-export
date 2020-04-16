@@ -131,6 +131,7 @@ def main():
                 date = dom.firstChild.getElementsByTagName('date')
                 date[0].firstChild.data = '2000-01-01T00:00:00Z'
             pretty_xml_as_string = dom.toprettyxml(indent="  ")
+            pretty_xml_as_string = pretty_xml_as_string.replace('/>', ' />')
             f.write(pretty_xml_as_string)
 
     if len(templates) == 0:
