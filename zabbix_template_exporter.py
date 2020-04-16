@@ -124,15 +124,15 @@ def main():
             j = json.loads(template_output)
             if args.reset_date:
                 j['zabbix_export']['date'] = '2000-01-01T00:00:00Z'
-            f.write(json.dumps(j, sort_keys=True, indent=4))
+            f.write(json.dumps(j, sort_keys=True, indent=4, ensure_ascii=False))
         else:
             dom = xml.dom.minidom.parseString(template_output)
             if args.reset_date:
                 date = dom.firstChild.getElementsByTagName('date')
                 date[0].firstChild.data = '2000-01-01T00:00:00Z'
-            pretty_xml_as_string = dom.toprettyxml(indent="  ")
-            pretty_xml_as_string = pretty_xml_as_string.replace('/>', ' />')
-            f.write(pretty_xml_as_string)
+            pretty_xml = dom.toprettyxml(indent="  ", encoding='utf-8').decode('utf-8')
+            pretty_xml = re.sub(r'(<[^/]+)/>', r'\1 />', pretty_xml)
+            f.write(pretty_xml)
 
     if len(templates) == 0:
         raise Exception('no templates found')
@@ -157,5 +157,6 @@ if __name__ == '__main__':
     try:
         sys.exit(main())
     except Exception as e:
+        raise
         logging.error(e)
         sys.exit(255)
