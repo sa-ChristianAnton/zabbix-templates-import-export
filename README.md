@@ -17,7 +17,8 @@ For better tracking of template changes in git, it is possible to override the d
 ### Parameters
 * `-d`, `--debug`: set log messages to DEBUG level
 * `-D`, `--directory`: directory to dump template files or tarball to, defaults to "."
-* `-n`, `--name`: name of the template to export, if not set, ALL templates are being exported
+* `-n`, `--name`: technical name of the template to export, if not set, ALL templates are being exported
+* `-v`, `--visible-name`: visible name of the template to export, if not set, ALL templates are being exported
 * `-t`, `--tarball`: instead of placing every found template into the directory one by one, create one tarball of all templates exported
 * `-r`, `--reset-date`: reset the export date inside the xml/json files to the fixed value of "2000-01-01T00:00:00Z" for easier tracking in git
 * `-j`, `--json`: use JSON export format instead of XML

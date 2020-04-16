@@ -77,7 +77,8 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description=__description__)
     parser.add_argument('-d', '--debug', action='store_true', help='set log level to DEBUG')
     parser.add_argument('-D', '--directory', type=str, default='.', help='directory to dump template files to')
-    parser.add_argument('-n', '--name', type=str, required=False, help='name of template to export')
+    parser.add_argument('-n', '--name', type=str, required=False, help='technical name of template to export')
+    parser.add_argument('-v', '--visible-name', type=str, required=False, help='visible name of the template to export')
     parser.add_argument('-t', '--tarball', action='store_true', help='create tarball of all exported templates in given directory')
     parser.add_argument('-r', '--reset-date', action='store_true', help='reset export date to 2000-01-01T00:00:00Z')
     parser.add_argument('-j', '--json', action='store_true', help='format of output')
@@ -100,14 +101,17 @@ def main():
         export_format='xml'
 
     if args.name:
-        templates = zapi.template.get(filter={'name': args.name})
+        templates = zapi.template.get(filter={'host': args.name})
+    elif args.visible_name:
+        templates = zapi.template.get(filter={'name': args.visible_name})
     else:
         templates = zapi.template.get()
 
     for template in templates:
-        logging.info('found template "%s" with id %s' % (template['host'], template['templateid']))
+        logging.info('found template "%s" (%s) with id %s' % (template['name'], template['host'], template['templateid']))
         #template_file_basename = re.sub(r'[ \.]', '_', template['name'])
-        template_file_basename = re.sub(r'\/', '#', template['name'])
+        template_file_basename = re.sub(r'\/', '#', template['host'])
+            
         if args.tarball:
             backup_file_path = os.path.join(tmp_dir, '%s.%s' % (template_file_basename, export_format))
         else:
@@ -126,7 +130,7 @@ def main():
             if args.reset_date:
                 date = dom.firstChild.getElementsByTagName('date')
                 date[0].firstChild.data = '2000-01-01T00:00:00Z'
-            pretty_xml_as_string = dom.toprettyxml()
+            pretty_xml_as_string = dom.toprettyxml(indent="  ")
             f.write(pretty_xml_as_string)
 
     if len(templates) == 0:
