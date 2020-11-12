@@ -82,6 +82,7 @@ def parse_arguments():
     parser.add_argument('-t', '--tarball', action='store_true', help='create tarball of all exported templates in given directory')
     parser.add_argument('-r', '--reset-date', action='store_true', help='reset export date to 2000-01-01T00:00:00Z')
     parser.add_argument('-j', '--json', action='store_true', help='format of output')
+    parser.add_argument('-y', '--yaml', action='store_true', help='format of output')
     # parser.add_argument('somearg', type=str, default='bla', help='this is something important')
     args = parser.parse_args()
     if args.debug:
@@ -97,6 +98,8 @@ def main():
 
     if args.json:
         export_format='json'
+    elif args.yaml:
+        export_format='yaml'
     else:
         export_format='xml'
 
@@ -125,6 +128,9 @@ def main():
             if args.reset_date:
                 j['zabbix_export']['date'] = '2000-01-01T00:00:00Z'
             f.write(json.dumps(j, sort_keys=True, indent=4, ensure_ascii=False))
+        if args.yaml:
+            # TODO implement overwrite of date
+            f.write(template_output)
         else:
             dom = xml.dom.minidom.parseString(template_output)
             if args.reset_date:

@@ -77,6 +77,7 @@ def parse_arguments():
     parser.add_argument('-d', '--debug', action='store_true', help='set log level to DEBUG')
     parser.add_argument('-f', '--file', type=str, help='file to load (xml/json)')
     parser.add_argument('-j', '--json', action='store_true', help='format of output')
+    parser.add_argument('-y', '--yaml', action='store_true', help='format of output')
     # parser.add_argument('somearg', type=str, default='bla', help='this is something important')
     args = parser.parse_args()
     if args.debug:
@@ -95,6 +96,8 @@ def main():
 
     if args.json:
         import_format='json'
+    elif args.yaml:
+        import_format='yaml'
     else:
         import_format='xml'
 
